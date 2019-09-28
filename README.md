@@ -40,6 +40,7 @@ foo()
 #### retry with context
 ```python
 from qaviton_handlers.try_context import retry
+
 with retry() as trying:
     while trying:
         with trying:
@@ -94,6 +95,7 @@ multi_try_no_break(
 #### ignore errors now so you can handle them later
 ```python
 from qaviton_handlers.catch import Catch
+
 catch = Catch()
 
 try:
