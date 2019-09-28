@@ -2,7 +2,9 @@ from traceback import format_tb
 
 
 class Error:
+    """exception wrapper"""
     def __init__(self, e: Exception):
+        self.e = e
         self.trace: str = ''.join(format_tb(e.__traceback__))
         self.type: str = type(e)
         self.value: str = str(e)
