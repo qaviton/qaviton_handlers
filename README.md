@@ -59,7 +59,8 @@ def foo(a=0):
 try_to(foo, 1)
 try_to(foo, 2)
 try_to(foo, 3)
-
+```
+```python
 # get the error
 error = try_to(foo, 4)
 if error: print(error)
@@ -67,11 +68,13 @@ if error: print(error)
 # if error occurred
 if try_to(foo, 5):
     try_to(foo, 5)
-
+```
+```python
 # try to get a number
 number = try_or_none(lambda a:float(a+input("select number:")), 6)
 if number: print(number)
-
+```
+```python
 # try many functions, return a list of results, or an error
 # if an error occurred, the multi try stops
 multi_try(
@@ -82,7 +85,8 @@ multi_try(
     lambda: foo(7),
     lambda: foo(7),
 )
-
+```
+```python
 # try many functions, return a list of results, some may be errors
 # if an error occurred, the multi try continues
 multi_try_no_break(
@@ -98,15 +102,21 @@ from qaviton_handlers.catch import Catch
 
 catch = Catch()
 
+# catch an error
 try:
-    1+'1'
+    1 + '1'
 except Exception as e:
     catch(e)
 
+# a cleaner syntax
 with catch:
-    1+'1'
-    2+'2'
+    1 + '1'
+    2 + '2'
 
+# ignore the error
+with Catch():
+    5 * 'e'
+    
 print(f"caught {catch.count} errors")
 print(f"caught first {catch.first}")
 print(f"caught last {catch.last}")

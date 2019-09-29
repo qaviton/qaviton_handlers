@@ -7,24 +7,34 @@ class Catch:
         from qaviton_handlers.catch import Catch
         catch = Catch()
 
+        # catch an error
         try:
-            1+'1'
+            1 + '1'
         except Exception as e:
             catch(e)
 
-        with catch():
-            1+'1'
-            2+'2'
+        # a cleaner syntax
+        with catch:
+            1 + '1'
+            2 + '2'
+
+        # ignore the error
+        with Catch():
+            5 * 'e'
 
         print(f"caught {catch.count} errors")
         print(f"caught first {catch.first}")
         print(f"caught last {catch.last}")
     """
-    def __init__(self):
+    def __init__(self, exceptions=Exception):
+        """ :param exceptions: an exception or tuple of exceptions to catch """
+        self.exceptions = exceptions if isinstance(exceptions, tuple) else (exceptions,)
         self.stack = set()
 
     def __call__(self, error):
-        return self.handler(error)
+        if type(error) in self.exceptions:
+            return self.handler(error)
+        raise error
 
     def __len__(self):
         return len(self.stack)
