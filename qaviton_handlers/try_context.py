@@ -1,8 +1,8 @@
-from qaviton_handlers.utils.log import dum_log
+from qaviton_handlers.utils.log import log
 from qaviton_handlers.utils.handle_failed_attempt import handle_failed_attempt
 
 
-def retry(tries=3, delay=0, backoff=1, jitter=0, max_delay=None, exceptions=Exception, logger=dum_log):
+def retry(tries=3, delay=0, backoff=1, jitter=0, max_delay=None, exceptions=Exception, logger=log):
     """try a context of actions until attempts run out
     :param exceptions: an exception or a tuple of exceptions to catch. default: Exception.
     :param tries: the maximum number of attempts: -1 (infinite).

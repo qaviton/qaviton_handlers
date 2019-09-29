@@ -1,3 +1,4 @@
+from logging import Logger
 from qaviton_handlers.utils.error import Error
 
 
@@ -5,7 +6,7 @@ class Catch:
     """in cases where you find yourself needing to ignore errors now so you can handle them later
     usage:
         from qaviton_handlers.catch import Catch
-        catch = Catch()
+        catch = Catch(store=True)
 
         # catch an error
         try:
@@ -26,14 +27,18 @@ class Catch:
         print(f"caught first {catch.first}")
         print(f"caught last {catch.last}")
     """
-    def __init__(self, exceptions=Exception):
+    def __init__(self, exceptions=Exception, store=False, log: Logger = None):
         """ :param exceptions: an exception or tuple of exceptions to catch """
         self.exceptions = exceptions if isinstance(exceptions, tuple) else (exceptions,)
+        self.log = log
+        self.store = store
         self.stack = set()
 
     def __call__(self, error):
         if type(error) in self.exceptions:
-            return self.handler(error)
+            if self.store:
+                return self.handler(error)
+            return
         raise error
 
     def __len__(self):
@@ -60,8 +65,7 @@ class Catch:
         return max(self.stack)
 
     def handler(self, e):
-        error = Error(e)
-        self.stack.add(error)
+        self.stack.add(Error(e))
         return self
 
     def clean(self):

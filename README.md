@@ -70,6 +70,11 @@ if try_to(foo, 5):
     try_to(foo, 5)
 ```
 ```python
+# try with key arguments
+r = try_to(lambda a,b,c:a*b*c, 1,kwargs={'b':2,'c':3})
+print(r)
+```
+```python
 # try to get a number
 number = try_or_none(lambda a:float(a+input("select number:")), 6)
 if number: print(number)
@@ -78,13 +83,24 @@ if number: print(number)
 # try many functions, return a list of results, or an error
 # if an error occurred, the multi try stops
 multi_try(
-    foo,
-    foo,
-    foo,
-    lambda: foo(7),
-    lambda: foo(7),
-    lambda: foo(7),
+  lambda: foo(10), 
+  lambda: foo(11), 
 )
+
+# specify errors to ignore
+response = multi_try(
+  lambda: foo(13),
+  lambda: foo(14),
+  exceptions=Exception,
+)
+
+# handle the error
+response = multi_try(
+  lambda: foo(13),
+  lambda: foo(14),
+)
+if isinstance(response, Exception):
+    ...
 ```
 ```python
 # try many functions, return a list of results, some may be errors
@@ -99,8 +115,9 @@ multi_try_no_break(
 #### ignore errors now so you can handle them later
 ```python
 from qaviton_handlers.catch import Catch
+from qaviton_handlers.utils.error import Error
 
-catch = Catch()
+catch = Catch(store=True)
 
 # catch an error
 try:
@@ -120,5 +137,12 @@ with Catch():
 print(f"caught {catch.count} errors")
 print(f"caught first {catch.first}")
 print(f"caught last {catch.last}")
+
+# make your own Catch
+class MyCatch(Catch):
+    def handler(self, e):
+        self.stack.add(Error(e))
+        print()
+        return self
 ```  
   
