@@ -103,7 +103,7 @@ try:
 except Exception as e:
     catch(e)
 
-with catch():
+with catch:
     1+'1'
     2+'2'
 
