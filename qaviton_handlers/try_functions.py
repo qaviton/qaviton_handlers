@@ -1,6 +1,15 @@
 from logging import Logger
 
 
+def handle(f, handler, exceptions=Exception, logger: Logger = None):
+    try:
+        return f()
+    except exceptions as e:
+        if logger:
+            logger.exception(e)
+        return handler()
+
+
 def try_to(f, *args, exceptions=Exception, logger: Logger = None, kwargs: dict = None):
     try:
         return f(*args, **kwargs if kwargs else {})
